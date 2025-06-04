@@ -51,9 +51,9 @@ trait OpenAPIValidatorSymfonyTrait
     }
 
     protected static function assertResponseMatchesOpenAPISchema(
-        ?ResponseInterface $response,
         string $path,
         string $method,
+        ?ResponseInterface $response = null,
     ): void {
         if (null === $response) {
             self::assertWebTestCase();
