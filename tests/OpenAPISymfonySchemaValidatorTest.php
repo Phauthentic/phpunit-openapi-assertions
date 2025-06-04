@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Phauthentic\PHPUnit\OpenAPIValidator\Tests;
 
+use Phauthentic\PHPUnit\OpenAPIValidator\OpenAPISchemaValidationFailedException;
+use Phauthentic\PHPUnit\OpenAPIValidator\Symfony\OpenAPISymfonySchemaValidator;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Phauthentic\PHPUnit\OpenAPIValidator\OpenAPISchemaValidationFailedException;
-use Phauthentic\PHPUnit\OpenAPIValidator\OpenAPISymfonySchemaValidator;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
