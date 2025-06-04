@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Phauthentic\PHPUnit\OpenAPIValidator;
+namespace Phauthentic\PHPUnit\OpenAPIValidator\Symfony;
 
 use Nyholm\Psr7\Factory\Psr17Factory;
+use Phauthentic\PHPUnit\OpenAPIValidator\OpenAPISchemaValidator;
 use Psr\Http\Message\RequestInterface as PsrRequestInterface;
 use Psr\Http\Message\ResponseInterface as PsrResponseInterface;
 use Symfony\Bridge\PsrHttpMessage\Factory\PsrHttpFactory;
