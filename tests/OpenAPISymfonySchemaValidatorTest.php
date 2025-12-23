@@ -6,11 +6,13 @@ namespace Phauthentic\PHPUnit\OpenAPIValidator\Tests;
 
 use Phauthentic\PHPUnit\OpenAPIValidator\OpenAPISchemaValidationFailedException;
 use Phauthentic\PHPUnit\OpenAPIValidator\Symfony\OpenAPISymfonySchemaValidator;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
+#[CoversClass(OpenAPISymfonySchemaValidator::class)]
 class OpenAPISymfonySchemaValidatorTest extends TestCase
 {
     private OpenAPISymfonySchemaValidator $validator;
@@ -42,6 +44,9 @@ class OpenAPISymfonySchemaValidatorTest extends TestCase
         $this->validator->validateRequest($request);
     }
 
+    /**
+     * @covers \Phauthentic\PHPUnit\OpenAPIValidator\Symfony\OpenAPISymfonySchemaValidator
+     */
     #[Test]
     public function testValidateSymfonyResponsePasses(): void
     {
@@ -59,6 +64,9 @@ class OpenAPISymfonySchemaValidatorTest extends TestCase
         $this->assertTrue(true); // If no exception is thrown, the test passes.
     }
 
+    /**
+     * @covers \Phauthentic\PHPUnit\OpenAPIValidator\Symfony\OpenAPISymfonySchemaValidator
+     */
     #[Test]
     public function testValidateSymfonyResponseFails(): void
     {
