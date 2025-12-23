@@ -44,9 +44,6 @@ class OpenAPISymfonySchemaValidatorTest extends TestCase
         $this->validator->validateRequest($request);
     }
 
-    /**
-     * @covers \Phauthentic\PHPUnit\OpenAPIValidator\Symfony\OpenAPISymfonySchemaValidator
-     */
     #[Test]
     public function testValidateSymfonyResponsePasses(): void
     {
@@ -64,9 +61,6 @@ class OpenAPISymfonySchemaValidatorTest extends TestCase
         $this->assertTrue(true); // If no exception is thrown, the test passes.
     }
 
-    /**
-     * @covers \Phauthentic\PHPUnit\OpenAPIValidator\Symfony\OpenAPISymfonySchemaValidator
-     */
     #[Test]
     public function testValidateSymfonyResponseFails(): void
     {

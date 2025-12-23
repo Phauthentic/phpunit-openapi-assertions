@@ -12,6 +12,15 @@ jobs:
       matrix:
         php-version: ['8.1', '8.2', '8.3', '8.4']
         phpunit-version: ['10', '11', '12']
+        exclude:
+          # PHPUnit 11 requires PHP 8.2+
+          - php-version: '8.1'
+            phpunit-version: '11'
+          # PHPUnit 12 requires PHP 8.3+
+          - php-version: '8.1'
+            phpunit-version: '12'
+          - php-version: '8.2'
+            phpunit-version: '12'
 
     steps:
       - uses: actions/checkout@v4
@@ -27,10 +36,10 @@ jobs:
           coverage: pcov
 
       - name: Composer install
-        run: composer install --no-interaction --prefer-dist
+        run: composer update --no-interaction --prefer-dist
 
       - name: Install PHPUnit ${{ matrix.phpunit-version }}
-        run: composer require --dev phpunit/phpunit:^${{ matrix.phpunit-version }}.0 --no-interaction
+        run: composer require --dev phpunit/phpunit:^${{ matrix.phpunit-version }}.0 --no-interaction --update-with-dependencies
 
       - name: Run PHPUnit
         run: |
@@ -39,6 +48,7 @@ jobs:
           else
             bin/phpunit
           fi
+
       - name: Code Coverage Report
         if: success() && matrix.php-version == '8.3' && matrix.phpunit-version == '11'
         uses: codecov/codecov-action@v4
