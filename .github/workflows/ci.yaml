@@ -39,7 +39,7 @@ jobs:
         run: composer update --no-interaction --prefer-dist
 
       - name: Install PHPUnit ${{ matrix.phpunit-version }}
-        run: composer require --dev phpunit/phpunit:^${{ matrix.phpunit-version }}.0 --no-interaction --update-with-dependencies
+        run: composer require --dev phpunit/phpunit:^${{ matrix.phpunit-version }}.0 --no-interaction -W
 
       - name: Run PHPUnit
         run: |
