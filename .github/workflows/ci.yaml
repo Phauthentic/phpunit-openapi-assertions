@@ -41,12 +41,21 @@ jobs:
       - name: Install PHPUnit ${{ matrix.phpunit-version }}
         run: composer require --dev phpunit/phpunit:^${{ matrix.phpunit-version }}.0 --no-interaction -W
 
+      - name: Determine PHPUnit config
+        id: phpunit-config
+        run: |
+          if [[ "${{ matrix.phpunit-version }}" == "10" ]]; then
+            echo "config=phpunit10.xml" >> $GITHUB_OUTPUT
+          else
+            echo "config=phpunit.xml" >> $GITHUB_OUTPUT
+          fi
+
       - name: Run PHPUnit
         run: |
           if [[ ${{ matrix.php-version }} == '8.3' && ${{ matrix.phpunit-version }} == '11' ]]; then
-            bin/phpunit --coverage-clover=coverage.xml
+            bin/phpunit --configuration ${{ steps.phpunit-config.outputs.config }} --coverage-clover=coverage.xml
           else
-            bin/phpunit
+            bin/phpunit --configuration ${{ steps.phpunit-config.outputs.config }}
           fi
 
       - name: Code Coverage Report
