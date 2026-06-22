@@ -10,7 +10,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-version: ['8.1', '8.2', '8.3', '8.4']
+        php-version: ['8.1', '8.2', '8.3', '8.4', '8.5']
         phpunit-version: ['10', '11', '12']
         exclude:
           # PHPUnit 11 requires PHP 8.2+
@@ -21,6 +21,9 @@ jobs:
             phpunit-version: '12'
           - php-version: '8.2'
             phpunit-version: '12'
+          # PHPUnit 10 is not compatible with PHP 8.5
+          - php-version: '8.5'
+            phpunit-version: '10'
 
     steps:
       - uses: actions/checkout@v4
