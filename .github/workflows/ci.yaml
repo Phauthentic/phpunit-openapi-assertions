@@ -62,7 +62,7 @@ jobs:
 
       - name: Code Coverage Report
         if: success() && matrix.php-version == '8.3' && matrix.phpunit-version == '11'
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v7
 
   code-analysis:
     name: Coding Standard & Static Analysis
