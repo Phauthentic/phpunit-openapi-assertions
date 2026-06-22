@@ -10,10 +10,23 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-version: ['8.3', '8.4']
+        php-version: ['8.1', '8.2', '8.3', '8.4', '8.5']
+        phpunit-version: ['10', '11', '12']
+        exclude:
+          # PHPUnit 11 requires PHP 8.2+
+          - php-version: '8.1'
+            phpunit-version: '11'
+          # PHPUnit 12 requires PHP 8.3+
+          - php-version: '8.1'
+            phpunit-version: '12'
+          - php-version: '8.2'
+            phpunit-version: '12'
+          # PHPUnit 10 is not compatible with PHP 8.5
+          - php-version: '8.5'
+            phpunit-version: '10'
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7.0.0
         with:
           fetch-depth: 1
 
@@ -25,38 +38,45 @@ jobs:
           tools: pecl
           coverage: pcov
 
-      - name: Composer install
+      - name: Install dependencies with PHPUnit ${{ matrix.phpunit-version }}
         run: |
-          if [[ ${{ matrix.prefer-lowest == 'prefer-lowest' }} ]]; then
-            composer update --prefer-stable
+          composer require --dev phpunit/phpunit:^${{ matrix.phpunit-version }}.0 --no-update
+          composer update --no-interaction --prefer-dist
+
+      - name: Determine PHPUnit config
+        id: phpunit-config
+        run: |
+          if [[ "${{ matrix.phpunit-version }}" == "10" ]]; then
+            echo "config=phpunit10.xml" >> $GITHUB_OUTPUT
           else
-            composer install
+            echo "config=phpunit.xml" >> $GITHUB_OUTPUT
           fi
 
       - name: Run PHPUnit
         run: |
-          if [[ ${{ matrix.php-version }} == '8.3' ]]; then
-            bin/phpunit --coverage-clover=coverage.xml
+          if [[ ${{ matrix.php-version }} == '8.3' && ${{ matrix.phpunit-version }} == '11' ]]; then
+            bin/phpunit --configuration ${{ steps.phpunit-config.outputs.config }} --coverage-clover=coverage.xml
           else
-            bin/phpunit
+            bin/phpunit --configuration ${{ steps.phpunit-config.outputs.config }}
           fi
+
       - name: Code Coverage Report
-        if: success() && matrix.php-version == '8.2'
-        uses: codecov/codecov-action@v4
+        if: success() && matrix.php-version == '8.3' && matrix.phpunit-version == '11'
+        uses: codecov/codecov-action@v7
 
   code-analysis:
     name: Coding Standard & Static Analysis
     runs-on: ubuntu-24.04
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7.0.0
         with:
           fetch-depth: 1
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.php-version }}
+          php-version: '8.4'
           extensions: json, fileinfo
           coverage: pcov
           tools: pecl

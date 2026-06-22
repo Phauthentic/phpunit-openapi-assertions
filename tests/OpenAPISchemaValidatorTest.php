@@ -7,11 +7,13 @@ namespace Phauthentic\PHPUnit\OpenAPIValidator\Tests;
 use JsonException;
 use Nyholm\Psr7\Request;
 use Nyholm\Psr7\Response;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Phauthentic\PHPUnit\OpenAPIValidator\OpenAPISchemaValidator;
 use Phauthentic\PHPUnit\OpenAPIValidator\OpenAPISchemaValidationFailedException;
 
+#[CoversClass(OpenAPISchemaValidator::class)]
 class OpenAPISchemaValidatorTest extends TestCase
 {
     private OpenAPISchemaValidator $validator;
